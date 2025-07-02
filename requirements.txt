@@ -1,0 +1,7 @@
+fastapi[standard]
+nltk
+emoji
+joblib
+scikit-learn
+matplotlib
+google-api-python-client
