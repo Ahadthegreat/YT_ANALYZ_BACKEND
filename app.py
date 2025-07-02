@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from googleapiclient.discovery import build
+import os
 
 
 nltk.download('stopwords')
@@ -144,4 +145,5 @@ def plot_sentiment(video: YouTubeRequest):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app)
+    port = int(os.environ.get("PORT", 8000))  
+    uvicorn.run("app:app", host="0.0.0.0", port=port, reload=True)
