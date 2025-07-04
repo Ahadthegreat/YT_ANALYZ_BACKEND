@@ -61,9 +61,13 @@ def text_processing(text):
     text = ' '.join([word for word in word_tokenize(text) if word not in stop_words])
     return text
 
-# Comment fetcher
+def extract_video_id(video_url: str) -> str:
+    regex = r"(?:v=|\/)([0-9A-Za-z_-]{11})"
+    match = re.search(regex, video_url)
+    return match.group(1)
+
 def get_comments(video_url: str, api_key: str) -> List[str]:
-    watch_index = video_url.find("watch?v=")
+    watch_index = extract_video_id.find("watch?v=")
     if watch_index == -1:
         raise ValueError("Invalid YouTube URL.")
 
