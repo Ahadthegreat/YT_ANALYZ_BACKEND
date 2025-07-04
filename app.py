@@ -64,14 +64,13 @@ def text_processing(text):
 def extract_video_id(video_url: str) -> str:
     regex = r"(?:v=|\/)([0-9A-Za-z_-]{11})"
     match = re.search(regex, video_url)
+    if not match:
+        raise ValueError("Invalid YouTube URL.")
     return match.group(1)
 
 def get_comments(video_url: str, api_key: str) -> List[str]:
-    watch_index = extract_video_id.find("watch?v=")
-    if watch_index == -1:
-        raise ValueError("Invalid YouTube URL.")
+    video_id = extract_video_id(video_url)
 
-    video_id = video_url[watch_index + len('watch?v='): watch_index + len('watch?v=') + 11]
     youtube = build('youtube', 'v3', developerKey=api_key)
     video_response = youtube.videos().list(part='snippet', id=video_id).execute()
 
@@ -103,8 +102,6 @@ def get_comments(video_url: str, api_key: str) -> List[str]:
             break
 
     return comments
-
-# Sentiment analysis
 def analyze_sentiment(comments: List[str]):
     processed = [text_processing(c) for c in comments]
     X = vectorizer.transform(processed)
